@@ -52,6 +52,12 @@ class Robot {
   void initializeTorqueControl();
 
   /**
+   * Starts a velocity control loop. Before using this method make sure that no other
+   * control or reading loop is currently active.
+   */
+  void initializeVelocityControl();
+
+  /**
    * Starts a reading loop of the robot state. Before using this method make sure that no other
    * control or reading loop is currently active.
    */
@@ -67,11 +73,11 @@ class Robot {
   franka::RobotState read();
 
   /**
-   * Sends new desired torque commands to the control loop in a thread-safe way.
+   * Sends new desired torque or joint velocities commands to the control loop in a thread-safe way.
    * The robot will use these torques until a different set of torques are commanded.
    * @param[in] efforts torque command for each joint.
    */
-  void write(const std::array<double, 7>& efforts);
+  void write(const std::array<double, 7>& command);
 
   /// @return true if there is no control or reading loop running.
   bool isStopped() const;
@@ -85,5 +91,7 @@ class Robot {
   bool stopped_ = true;
   franka::RobotState current_state_;
   std::array<double, 7> tau_command_{};
+  std::array<double, 7> vel_command_{};
+  bool use_velocity_control_ = false;
 };
 }  // namespace franka_hardware
