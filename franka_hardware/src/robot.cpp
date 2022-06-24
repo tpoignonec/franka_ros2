@@ -84,6 +84,7 @@ void Robot::initializeVelocityControl() {
   assert(isStopped());
   stopped_ = false;
   use_velocity_control_ = true;
+  robot_->setJointImpedance({{3000, 3000, 3000, 3000, 2000, 2000, 2000}});
   const auto kVelocityControl = [this]() {
     robot_->control(
         [this](const franka::RobotState& state, const franka::Duration& /*period*/) -> franka::JointVelocities {
@@ -95,7 +96,8 @@ void Robot::initializeVelocityControl() {
           franka::JointVelocities out(vel_command_);
           out.motion_finished = finish_;
           return out;
-        });
+        }, 
+        franka::ControllerMode::kJointImpedance, true, 100.0); 
         //,true, franka::kMaxCutoffFrequency);
   };
   control_thread_ = std::make_unique<std::thread>(kVelocityControl);
