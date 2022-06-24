@@ -91,7 +91,7 @@ def generate_launch_description():
             name='joint_state_publisher',
             parameters=[
                 {'source_list': ['franka/joint_states', 'panda_gripper/joint_states'],
-                 'rate': 30}],
+                 'rate': 500}],
         ),
         Node(
             package='controller_manager',
@@ -124,6 +124,15 @@ def generate_launch_description():
              name='rviz2',
              arguments=['--display-config', rviz_file],
              condition=IfCondition(use_rviz)
-             )
+        ),
+
+        # A node to publish world -> panda_link0 transform
+        Node(
+            package="tf2_ros",
+            executable="static_transform_publisher",
+            name="static_transform_publisher",
+            output="log",
+            arguments=["0.0", "0.0", "0.0", "0", "0.0", "0.0", "world", "panda_link0"],
+        )
 
     ])

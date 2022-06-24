@@ -77,6 +77,8 @@ CallbackReturn JointTrajectoryController::on_init()
     return CallbackReturn::ERROR;
   }
 
+  RCLCPP_WARN(node_->get_logger(), "Effort controller only! Ad-hoc franka version of 'JointTrajectoryController'.");
+
   return CallbackReturn::SUCCESS;
 }
 
@@ -527,7 +529,7 @@ CallbackReturn JointTrajectoryController::on_configure(const rclcpp_lifecycle::S
     {
       use_closed_loop_pid_adapter = true;
       // TODO(anyone): remove this when implemented
-      RCLCPP_ERROR(logger, "using 'velocity' command interface alone is not yet implemented yet.");
+      RCLCPP_ERROR(logger, "using 'velocity' command interface alone is not yet implemented yet. (TODO?)");
       return CallbackReturn::FAILURE;
       // if velocity interface can be used without position if multiple defined
     }
