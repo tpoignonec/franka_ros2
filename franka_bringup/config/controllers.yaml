@@ -4,18 +4,18 @@ controller_manager:
 
     joint_trajectory_controller:
       type: joint_trajectory_controller/JointTrajectoryController #joint_effort_trajectory_controller/JointTrajectoryController
-
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
-
     joint_group_velocity_controller:
       type: velocity_controllers/JointGroupVelocityController
-
+      
+# Test package 'cartesian_controllers"'
     cartesian_motion_controller:
       type: cartesian_motion_controller/CartesianMotionController
-
     cartesian_motion_handle:
       type : cartesian_controller_handles/MotionControlHandle
+    cartesian_force_controller:
+      type: "cartesian_force_controller/CartesianForceController"
 
     
 joint_trajectory_controller:
@@ -56,16 +56,17 @@ cartesian_motion_controller:
       end_effector_link: "panda_link8"
       robot_base_link: "panda_link0"
       target_frame_topic: "target_frame"
+      target_twist_topic: "target_frame"
       solver:
-        #error_scale: 1.0
+        error_scale: 1.0
         iterations: 1
       pd_gains:
-          trans_x: {p: 200.0, d: 10.0}
-          trans_y: {p: 200.0, d: 10.0}
-          trans_z: {p: 200.0, d: 10.0}
-          rot_x: {p: 50.0, d: 10.0}
-          rot_y: {p: 50.0, d: 10.0}
-          rot_z: {p: 50.0, d: 10.0}
+          trans_x: {p: 600.0, d: 40.0}
+          trans_y: {p: 600.0, d: 40.0}
+          trans_z: {p: 600.0, d: 40.0}
+          rot_x: {p: 100.0, d: 20.0}
+          rot_y: {p: 100.0, d: 20.0}
+          rot_z: {p: 100.0, d: 20.0}
       joints:
         - panda_joint1
         - panda_joint2
@@ -96,3 +97,30 @@ cartesian_motion_handle:
       state_interfaces:
         - position
         - velocity
+
+
+cartesian_force_controller:
+    ros__parameters:
+      end_effector_link: "panda_link8"
+      robot_base_link: "panda_link0"      
+      ft_sensor_ref_link: "panda_link8"
+      joints:
+        - panda_joint1
+        - panda_joint2
+        - panda_joint3
+        - panda_joint4
+        - panda_joint5
+        - panda_joint6
+        - panda_joint7
+      command_interfaces:
+        - velocity
+      state_interfaces:
+        - position
+        - velocity
+      pd_gains:
+          trans_x: {p: 0.0}
+          trans_y: {p: 0.0}
+          trans_z: {p: 0.1}
+          rot_x: {p: 0.0}
+          rot_y: {p: 0.0}
+          rot_z: {p: 0.0}
