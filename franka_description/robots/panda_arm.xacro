@@ -310,14 +310,5 @@
       <parent link="${arm_id}_link7"/>
       <child link="${arm_id}_link8"/>
     </joint>
-
-    <!-- F/T SENSOR -->
-    <link name="${arm_id}_ft_sensor" />
-    <joint name="${arm_id}_ft_sensor_joint" type="fixed">
-      <origin rpy="0 0 3.14" xyz="0 0 0.102" />
-      <parent link="${arm_id}_link8" />
-      <child link="${arm_id}_ft_sensor" />
-    </joint>
-
   </xacro:macro>
 </robot>
